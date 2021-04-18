@@ -57,7 +57,7 @@ def aiPlayerMove():
         for i in possibleMoves:
             boardCopy = board[:]
             boardCopy[i] = let
-            if isWinner(boardCopy, let):
+            if determineWinner(boardCopy, let):
                 move = i
                 return move
 
