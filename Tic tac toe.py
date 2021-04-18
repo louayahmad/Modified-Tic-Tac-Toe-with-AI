@@ -67,7 +67,7 @@ def aiPlayerMove():
             cornersOpen.append(i)
             
     if len(cornersOpen) > 0:
-        move = selectRandom(cornersOpen)
+        move = selectsRandomPosition(cornersOpen)
         return move
 
     if 5 in possibleMoves:
@@ -80,7 +80,7 @@ def aiPlayerMove():
             edgesOpen.append(i)
             
     if len(edgesOpen) > 0:
-        move = selectRandom(edgesOpen)
+        move = selectsRandomPosition(edgesOpen)
         
     return move
 
@@ -124,7 +124,7 @@ def main():
             break
 
 #checks if the board is full before the game ends, leading to a tie!
-    if checkIfBoardFull(board):
+    if fullBoard(board):
         print('Tie Game!')
 
 #this is the start game loop, asking the player if they want to play
