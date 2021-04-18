@@ -1,5 +1,6 @@
 board = [' ' for x in range(10)]
 
+#inserts letter X into the correct postion
 def insertLetter(letter, pos):
     board[pos] = letter
 
@@ -18,14 +19,18 @@ def printBoard(board):
     print('   |   |')
     print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
     print('   |   |')
-    
-def isWinner(bo, le):
+
+#determines the winner of the game by checking if each place on the board is occupied and if it satifies tic tac toe game winning conditions
+#For example, three X's or three O's 
+def determineWinner(bo, le):
     return (bo[7] == le and bo[8] == le and bo[9] == le) or (bo[4] == le and bo[5] == le and bo[6] == le) or(bo[1] == le and bo[2] == le and bo[3] == le) or(bo[1] == le and bo[4] == le and bo[7] == le) or(bo[2] == le and bo[5] == le and bo[8] == le) or(bo[3] == le and bo[6] == le and bo[9] == le) or(bo[1] == le and bo[5] == le and bo[9] == le) or(bo[3] == le and bo[5] == le and bo[7] == le)
 
+#this is the player 
+#lets player input position on board in the grid, if its full, they must choose another
 def playerMove():
     run = True
     while run:
-        move = input('Please select a position to place an \'X\' (1-9): ')
+        move = input('Place an \'X\' (1-9): ')
         try:
             move = int(move)
             if move > 0 and move < 10:
@@ -33,14 +38,18 @@ def playerMove():
                     run = False
                     insertLetter('X', move)
                 else:
-                    print('Sorry, this space is occupied!')
+                    print('This space is full!')
             else:
-                print('Please type a number within the range!')
+                print('Number not in range')
         except:
-            print('Please type a number!')
-            
+            print('Type a number!')
 
-def compMove():
+#How Game AI works:         
+#this is the part of the in game computer or AI payer
+#determines if there is a move that it could take to win the game first
+#if not, it takes into account player move and blocks there move
+#if no moves let player or computer win, computer will choose a corner or center depending on which is empty
+def aiPlayerMove():
     possibleMoves = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
     move = 0
 
@@ -75,48 +84,52 @@ def compMove():
         
     return move
 
-def selectRandom(li):
+#selects a random position to input computer 
+def selectsRandomPosition(li):
     import random
     ln = len(li)
     r = random.randrange(0,ln)
     return li[r]
     
-
-def isBoardFull(board):
+#checks if the board is full
+def fullBoard(board):
     if board.count(' ') > 1:
         return False
     else:
         return True
 
+#checks which player has one, and return a message stating it
 def main():
-    print('Welcome to Tic Tac Toe!')
+    print('Get ready to play some Tic Tac Toe!')
     printBoard(board)
 
-    while not(isBoardFull(board)):
-        if not(isWinner(board, 'O')):
+    while not(fullBoard(board)):
+        if not(determineWinner(board, 'O')):
             playerMove()
             printBoard(board)
         else:
-            print('Sorry, O\'s won this time!')
+            print('O\'s won!')
             break
 
-        if not(isWinner(board, 'X')):
-            move = compMove()
+        if not(determineWinner(board, 'X')):
+            move = aiPlayerMove()
             if move == 0:
-                print('Tie Game!')
+                print('Game is a tie!')
             else:
                 insertLetter('O', move)
                 print('Computer placed an \'O\' in position', move , ':')
                 printBoard(board)
         else:
-            print('X\'s won this time! Good Job!')
+            print('X\'s won!')
             break
 
-    if isBoardFull(board):
+#checks if the board is full before the game ends, leading to a tie!
+    if checkIfBoardFull(board):
         print('Tie Game!')
 
+#this is the start game loop, asking the player if they want to play
 while True:
-    answer = input('Do you want to play and test your skills? (Y/N)')
+    answer = input('Start the game? (Y/N')
     if answer.lower() == 'y' or answer.lower == 'yes' or answer.upper == 'YES' or answer.upper == 'Y':
         board = [' ' for x in range(10)]
         print('-----------------------------------')
